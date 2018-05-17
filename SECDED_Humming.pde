@@ -1,3 +1,5 @@
+import processing.pdf.*;
+
 // 4bit number binary encoding/decoding with 1-bit error correction
 // and 2-bits error detection.
 
@@ -63,21 +65,44 @@ int fromCode(int[] code){
   return ret ;
 }
 
+static final int allWidth = (int)(104*5*208*104/38100) ;
+
+static final int stringWidth = (int)(allWidth*28.5/104);
+static final int codeWidth = (int)((allWidth-stringWidth)/8) , sheetHeight = (allWidth*27/104) ;
+static final int textHeight = (int)(allWidth*6/104) ;
+
 void setup(){
+  println( ((stringWidth + codeWidth * 8)*2) +","+ sheetHeight * 8 );
+  size( 600,608 ) ;
+  beginRecord (PDF, "codes.pdf");
+  background(255);
+  textSize(textHeight);
+}
 
-  for( int i=0;i<16;++i ){
-    
-    int[] b = toCode(i);
-    
-    // Shuffule at most 2 bits
-    int r1 = (int)(random(7));
-    b[r1] = 1-b[r1];
+boolean bPrinted = false ;
 
-    int r2 = (int)(random(7));
-    b[r2] = 1-b[r2];
+void draw(){
+  for( int i0=0;i0<2;++i0 ){
+    int xshift = i0 * allWidth; 
+    for( int i1=0;i1<8;++i1 ){
 
-    println( fromCode(b) );
-
+      int i = i0*8+i1 ;
+      int[] b = toCode(i);
+      
+      
+      text("Page "+i , xshift,(i1+1) * sheetHeight-4 );
+      
+      fill(0);
+      for( int j=0;j<8;++j ){
+        if( b[j] == 1 ){
+          rect(xshift + stringWidth + j * codeWidth , i1 * sheetHeight , codeWidth , codeWidth ) ;
+        }
+      }
+    }
   }
-
+  
+  if(!bPrinted){
+    bPrinted = true ;
+    endRecord ();
+  }
 }
