@@ -67,14 +67,15 @@ int fromCode(int[] code){
 
 static final double allWidth = 301;
 static final int pageMax = 5 ;
+static final int allOffs_x = 30 , allOffs_y = 30 ;
 
 static final int stringWidth = (int)(allWidth*28.5/104);
 static final int codeWidth = (int)((allWidth-stringWidth)/8) , sheetHeight = (int)(allWidth*27/104) ;
 static final int textHeight = (int)(allWidth*6/104) ;
 
 void setup(){
-  println( ((stringWidth + codeWidth * 8)*2) +","+ sheetHeight * pageMax );
-  size( 610,390 ) ;
+  println( ((stringWidth + codeWidth * 8 + allOffs_x )*2) +","+ (sheetHeight * pageMax+allOffs_y) );
+  size( 670,420 ) ;
   beginRecord (PDF, "codes.pdf");
   background(255);
   textSize(textHeight);
@@ -92,11 +93,13 @@ void draw(){
       
       
       fill(0);
-      text("Page "+i , xshift,(i1+1) * sheetHeight-5 );
+      text("Page "+i , xshift +allOffs_x ,(i1+1) * sheetHeight-5+allOffs_y );
 
       for( int j=0;j<8;++j ){
         if( b[j] == 1 ){
-          rect(xshift + stringWidth + j * codeWidth , i1 * sheetHeight , codeWidth , codeWidth ) ;
+          rect(xshift + stringWidth + j * codeWidth + allOffs_x
+          , i1 * sheetHeight + allOffs_y
+          , codeWidth , codeWidth ) ;
         }
       }
     }
