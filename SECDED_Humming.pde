@@ -1,4 +1,4 @@
-import processing.pdf.*;
+static final int pageMax = 6 ;
 
 // 4bit number binary encoding/decoding with 1-bit error correction
 // and 2-bits error detection.
@@ -10,6 +10,8 @@ import processing.pdf.*;
 
 // http://sun.ac.jp/prof/hnagano/houkoku/h24information-09.html
 // https://news.mynavi.jp/article/architecture-268/
+
+import processing.pdf.*;
 
 int[] toCode(int num){
   int[] code = new int[8];
@@ -65,17 +67,16 @@ int fromCode(int[] code){
   return ret ;
 }
 
-static final double allWidth = 301;
-static final int pageMax = 5 ;
+static final double allWidth = 300;
 static final int allOffs_x = 30 , allOffs_y = 30 ;
 
-static final int stringWidth = (int)(allWidth*28.5/104);
+static final int stringWidth = (int)(allWidth*29/104);
 static final int codeWidth = (int)((allWidth-stringWidth)/8) , sheetHeight = (int)(allWidth*27/104) ;
 static final int textHeight = (int)(allWidth*6/104) ;
 
 void setup(){
   println( ((stringWidth + codeWidth * 8 + allOffs_x )*2) +","+ (sheetHeight * pageMax+allOffs_y) );
-  size( 670,420 ) ;
+  size( 670,500 ) ;
   beginRecord (PDF, "codes.pdf");
   background(255);
   textSize(textHeight);
@@ -102,7 +103,10 @@ void draw(){
           , codeWidth , codeWidth ) ;
         }
       }
+      fill(0,0,0,0);
+      rect( xshift + allOffs_x ,i1 * sheetHeight+allOffs_y , (int)allWidth , sheetHeight ) ; 
     }
+    
   }
   
   if(!bPrinted){
