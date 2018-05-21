@@ -65,15 +65,16 @@ int fromCode(int[] code){
   return ret ;
 }
 
-static final int allWidth = (int)(104*5*208*104/38100) ;
+static final double allWidth = 301;
+static final int pageMax = 5 ;
 
 static final int stringWidth = (int)(allWidth*28.5/104);
-static final int codeWidth = (int)((allWidth-stringWidth)/8) , sheetHeight = (allWidth*27/104) ;
+static final int codeWidth = (int)((allWidth-stringWidth)/8) , sheetHeight = (int)(allWidth*27/104) ;
 static final int textHeight = (int)(allWidth*6/104) ;
 
 void setup(){
-  println( ((stringWidth + codeWidth * 8)*2) +","+ sheetHeight * 8 );
-  size( 600,608 ) ;
+  println( ((stringWidth + codeWidth * 8)*2) +","+ sheetHeight * pageMax );
+  size( 610,390 ) ;
   beginRecord (PDF, "codes.pdf");
   background(255);
   textSize(textHeight);
@@ -83,16 +84,16 @@ boolean bPrinted = false ;
 
 void draw(){
   for( int i0=0;i0<2;++i0 ){
-    int xshift = i0 * allWidth; 
-    for( int i1=0;i1<8;++i1 ){
+    int xshift = (int)(i0 * allWidth); 
+    for( int i1=0;i1<pageMax;++i1 ){
 
-      int i = i0*8+i1 ;
+      int i = i1+1; //i0*8+i1 ;
       int[] b = toCode(i);
       
       
-      text("Page "+i , xshift,(i1+1) * sheetHeight-4 );
-      
       fill(0);
+      text("Page "+i , xshift,(i1+1) * sheetHeight-5 );
+
       for( int j=0;j<8;++j ){
         if( b[j] == 1 ){
           rect(xshift + stringWidth + j * codeWidth , i1 * sheetHeight , codeWidth , codeWidth ) ;
